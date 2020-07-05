@@ -10,8 +10,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
 {
     /// <summary>プレイヤーのプレハブ</summary>
     [SerializeField] string m_playerPrefabName = "Prefab";
-    [SerializeField] Transform m_spawnPoint01;
-    [SerializeField] Transform m_spawnPoint02;
+    [SerializeField] Transform[] m_spawnPositions;
 
     private void Awake()
     {
@@ -80,7 +79,13 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.IsVisible = true;   // 誰でも参加できるようにする
-            roomOptions.MaxPlayers = 2;     // これは「２人プレイ」になる。無料版では最大20まで指定できる。
+            /* **************************************************
+             * spawPositions の配列長を最大プレイ人数とする。
+             * 無料版では最大20まで指定できる。
+             * MaxPlayers の型は byte なのでキャストしている。
+             * MaxPlayers の型が byte である理由はおそらく1ルームのプレイ人数を255人に制限したいためでしょう。
+             * **************************************************/
+            roomOptions.MaxPlayers = (byte) m_spawnPositions.Length;
             PhotonNetwork.CreateRoom(null, roomOptions); // ルーム名に null を指定するとランダムなルーム名を付ける
         }
     }
@@ -90,17 +95,23 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
     /// </summary>
     private void SpawnPlayer()
     {
-        // プレイヤーを生成し、他のクライアントと同期する
-        GameObject player = PhotonNetwork.Instantiate(m_playerPrefabName, Vector3.zero, Quaternion.identity);
+        // プレイヤーをどこに spawn させるか決める
+        int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;    // 自分の ActorNumber を取得する。なお ActorNumber は「1から」入室順に振られる。
+        Debug.Log("My ActorNumber: " + actorNumber);
+        Transform spawnPoint = m_spawnPositions[actorNumber - 1];
 
-        // プレイヤーによって違う場所にプレイヤーを移動する
-        if (PhotonNetwork.IsMasterClient)
+        // プレイヤーを生成し、他のクライアントと同期する
+        GameObject player = PhotonNetwork.Instantiate(m_playerPrefabName, spawnPoint.position, Quaternion.identity);
+
+        /* **************************************************
+         * ルームに参加している人数が最大に達したら部屋を閉じる（参加を締め切る）
+         * 部屋を閉じないと、最大人数から減った時に次のユーザーが入ってきてしまう。
+         * 現状のコードではユーザーが最大人数から減った際の追加入室を考慮していないため、追加入室させたい場合は実装を変更する必要がある。
+         * **************************************************/
+        if (actorNumber > PhotonNetwork.CurrentRoom.MaxPlayers - 1)
         {
-            player.transform.position = m_spawnPoint01.position;
-        }
-        else
-        {
-            player.transform.position = m_spawnPoint02.position;
+            Debug.Log("Closing Room");
+            PhotonNetwork.CurrentRoom.IsOpen = false;
         }
     }
 
@@ -110,7 +121,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
      * 
      * ***********************************************/
 
-    /// <summary>Photon に接続した時</summary>
+        /// <summary>Photon に接続した時</summary>
     public override void OnConnected()
     {
         Debug.Log("OnConnected");
