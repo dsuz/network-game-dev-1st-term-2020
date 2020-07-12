@@ -128,6 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_power: 10
   m_lifeTime: 1.6
+  m_attackPower: 1
 --- !u!114 &114526200265194408
 MonoBehaviour:
   m_ObjectHideFlags: 0

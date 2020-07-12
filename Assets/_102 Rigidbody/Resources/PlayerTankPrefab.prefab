@@ -210,6 +210,8 @@ MonoBehaviour:
   m_rotateSpeed: 80
   m_muzzle: {fileID: 4050176212567074}
   m_cannonPrefabName: CannonPrefab
+  m_maxLife: 30
+  m_lifeText: {fileID: 0}
 --- !u!54 &54170757379745344
 Rigidbody:
   m_ObjectHideFlags: 0
