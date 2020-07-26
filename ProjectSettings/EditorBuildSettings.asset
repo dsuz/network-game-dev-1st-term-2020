@@ -17,7 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_104 PunRPC/Tanks using RPC.unity
     guid: eeca783e6ae62f84495a6fb23d426227
-  - enabled: 1
+  - enabled: 0
     path: Assets/_2DNetworkGame/2DGame.unity
     guid: 88bfa61946897a841ac023e4cba54076
+  - enabled: 1
+    path: Assets/_3DRobotNetworkGame/New Scene.unity
+    guid: 2419feb202843ad409da9163b8ccf31d
   m_configObjects: {}
