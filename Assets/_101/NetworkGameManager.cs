@@ -101,7 +101,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks // Photon Realtime �
         Transform spawnPoint = m_spawnPositions[actorNumber - 1];
 
         // プレイヤーを生成し、他のクライアントと同期する
-        GameObject player = PhotonNetwork.Instantiate(m_playerPrefabName, spawnPoint.position, Quaternion.identity);
+        GameObject player = PhotonNetwork.Instantiate(m_playerPrefabName, spawnPoint.position, spawnPoint.rotation);
 
         /* **************************************************
          * ルームに参加している人数が最大に達したら部屋を閉じる（参加を締め切る）

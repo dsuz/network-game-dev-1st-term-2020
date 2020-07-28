@@ -21,10 +21,11 @@ public class RobotController : MonoBehaviour
     [SerializeField] float m_isGroundedLength = 1.1f;
     /// <summary>キャラクターの Animator</summary>
     [SerializeField] Animator m_anim;
-
     Rigidbody m_rb;
     PhotonView m_view;
-    
+    bool m_isHovering = false;
+    Vector3 m_movingDirection = Vector3.zero;
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -39,11 +40,20 @@ public class RobotController : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        // 物理挙動はこちらで処理する
+
+        m_rb.AddForce(m_movingDirection, ForceMode.Force);
+
+        if (m_isHovering)
+        {
+            m_rb.AddForce(Vector3.up * m_hoverPower, ForceMode.Force);
+        }
+    }
     void Update()
     {
         if (!m_view.IsMine) return;
-
-        // TODO: 動きの処理・ホバーの処理は FixedUpdate で処理すべき。ジャンプは Update でもよい。
 
         // 方向の入力を取得し、方向を求める
         float v = Input.GetAxisRaw("Vertical");
@@ -62,8 +72,11 @@ public class RobotController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_turnSpeed);
 
-            Vector3 force = dir.normalized * m_movePower; // 入力した方向に力をかける
-            m_rb.AddForce(force, ForceMode.Force);
+            m_movingDirection = dir.normalized * m_movePower; // 入力した方向に力をかける
+        }
+        else
+        {
+            m_movingDirection = Vector3.zero;
         }
 
         // Animator Controller のパラメータをセットする
@@ -110,7 +123,11 @@ public class RobotController : MonoBehaviour
         // 空中でジャンプボタンを押し続けると若干ホバーする
         if (Input.GetButton("Jump") && !IsGrounded())
         {
-            m_rb.AddForce(Vector3.up * m_hoverPower, ForceMode.Force);
+            m_isHovering = true;
+        }
+        else
+        {
+            m_isHovering = false;
         }
     }
 

@@ -69,7 +69,7 @@ MonoBehaviour:
   m_SynchronizePosition: 0
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
---- !u!114 &734953018
+--- !u!114 &514936379544533295
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,14 +78,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8318211730825055265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a767d50854265664eb720288f4dcf265, type: 3}
+  m_Script: {fileID: 11500000, guid: dc090d6188ba5be46ac0a21ec4264271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_movePower: 10000
-  m_turnSpeed: 2
+  m_movePower: 15000
+  m_turnSpeed: 3
   m_jumpPower: 30000
-  m_hoverPower: 5000
-  m_isGroundedLength: 7.5
+  m_hoverPower: 8000
+  m_isGroundedLength: 8
   m_anim: {fileID: 8318211730832490485}
 --- !u!114 &3262138314003022257
 MonoBehaviour:
