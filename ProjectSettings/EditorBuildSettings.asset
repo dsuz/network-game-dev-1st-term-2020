@@ -20,7 +20,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_2DNetworkGame/2DGame.unity
     guid: 88bfa61946897a841ac023e4cba54076
-  - enabled: 1
+  - enabled: 0
     path: Assets/_3DRobotNetworkGame/RobotBattle.unity
     guid: 0c13d5240f61cd14585dd6ce7ab1a199
+  - enabled: 0
+    path: Assets/_TurnBased/TurnBased.unity
+    guid: 9dc50abedcf95694da5230a0d6fe77e6
+  - enabled: 1
+    path: Assets/_TurnBasedDropChipGame/GameScene.unity
+    guid: 9480be234231c7443b43319c4d058d93
   m_configObjects: {}
